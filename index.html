@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Internship Board</title>
+
+    <meta
+        name="description"
+        content="Find internships by role, domain, skills, and work mode."
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+
+<body>
+
+    <!-- HEADER -->
+
+    <header class="site-header">
+
+        <div class="container header-content">
+
+            <a
+                href="#"
+                class="brand"
+                aria-label="Internship Board home"
+            >
+                Internship Board
+            </a>
+
+            <nav aria-label="Main navigation">
+
+                <a href="#internships">
+                    Internships
+                </a>
+
+                <a href="#about">
+                    About
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+            <div class="container">
+
+                <p class="eyebrow">
+                    Career opportunities
+                </p>
+
+                <h1>
+                    Find an internship that fits your future.
+                </h1>
+
+                <p class="hero-text">
+                    Explore internship opportunities across
+                    technology, design, data, and security.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- SEARCH AND FILTERS -->
+
+        <section
+            class="search-section"
+            aria-labelledby="search-heading"
+        >
+
+            <div class="container">
+
+                <h2 id="search-heading">
+                    Search internships
+                </h2>
+
+                <form id="filter-form">
+
+                    <div class="form-group">
+
+                        <label for="search-input">
+                            Search by title or skills
+                        </label>
+
+                        <input
+                            type="search"
+                            id="search-input"
+                            name="search"
+                            placeholder="e.g. Frontend, JavaScript, SQL"
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="domain-filter">
+                            Filter by domain
+                        </label>
+
+                        <select
+                            id="domain-filter"
+                            name="domain"
+                        >
+
+                            <option value="all">
+                                All domains
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="work-mode-filter">
+                            Filter by work mode
+                        </label>
+
+                        <select
+                            id="work-mode-filter"
+                            name="workMode"
+                        >
+
+                            <option value="all">
+                                All work modes
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="clear-filters"
+                    >
+                        Clear filters
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+        <!-- INTERNSHIPS -->
+
+        <section
+            class="internships-section"
+            id="internships"
+            aria-labelledby="internships-heading"
+        >
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <p class="eyebrow">
+                            Opportunities
+                        </p>
+
+                        <h2 id="internships-heading">
+                            Available internships
+                        </h2>
+
+                    </div>
+
+                    <p
+                        id="results-count"
+                        aria-live="polite"
+                    ></p>
+
+                </div>
+
+
+                <!-- Loading -->
+
+                <div
+                    id="loading-state"
+                    class="state-message"
+                    role="status"
+                >
+                    Loading internships...
+                </div>
+
+
+                <!-- Error -->
+
+                <div
+                    id="error-state"
+                    class="state-message error-state"
+                    role="alert"
+                    hidden
+                >
+
+                    <h3>
+                        Something went wrong
+                    </h3>
+
+                    <p>
+                        We couldn't load the internship records.
+                    </p>
+
+                    <button
+                        type="button"
+                        id="retry-button"
+                    >
+                        Try again
+                    </button>
+
+                </div>
+
+
+                <!-- Empty -->
+
+                <div
+                    id="empty-state"
+                    class="state-message"
+                    hidden
+                >
+
+                    <h3>
+                        No internships found
+                    </h3>
+
+                    <p>
+                        Try changing your search or filters.
+                    </p>
+
+                </div>
+
+
+                <!-- Internship cards appear here -->
+
+                <div
+                    id="internship-list"
+                    class="internship-grid"
+                    aria-live="polite"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ABOUT -->
+
+        <section
+            class="about-section"
+            id="about"
+        >
+
+            <div class="container">
+
+                <p class="eyebrow">
+                    About
+                </p>
+
+                <h2>
+                    Start exploring opportunities.
+                </h2>
+
+                <p>
+                    This internship board is designed to make
+                    searching for early-career opportunities
+                    simple and accessible.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="site-footer">
+
+        <div class="container">
+
+            <p>
+                &copy; 2026 Internship Board.
+                Built as an accessible responsive web project.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================
+         INTERNSHIP DETAILS
+         THIS IS HIDDEN AT FIRST
+         ===================================== -->
+
+    <div
+        id="details-modal"
+        class="modal-overlay"
+        hidden
+        aria-hidden="true"
+    >
+
+        <div
+            class="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
+        >
+
+            <button
+                type="button"
+                id="close-modal"
+                class="modal-close"
+                aria-label="Close internship details"
+            >
+                &times;
+            </button>
+
+
+            <p
+                id="modal-domain"
+                class="modal-domain"
+            ></p>
+
+
+            <h2 id="modal-title"></h2>
+
+
+            <p
+                id="modal-description"
+                class="modal-description"
+            ></p>
+
+
+            <div class="modal-details">
+
+                <div class="modal-detail">
+
+                    <span>
+                        Work mode
+                    </span>
+
+                    <strong id="modal-mode"></strong>
+
+                </div>
+
+
+                <div class="modal-detail">
+
+                    <span>
+                        Location
+                    </span>
+
+                    <strong id="modal-location"></strong>
+
+                </div>
+
+
+                <div class="modal-detail">
+
+                    <span>
+                        Openings
+                    </span>
+
+                    <strong id="modal-openings"></strong>
+
+                </div>
+
+            </div>
+
+
+            <h3 class="skills-heading">
+                Skills
+            </h3>
+
+
+            <div
+                id="modal-skills"
+                class="modal-skills"
+            ></div>
+
+
+            <button
+                type="button"
+                id="apply-button"
+                class="modal-apply"
+            >
+                Apply Now
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================
+         APPLICATION FORM
+         THIS IS ALSO HIDDEN AT FIRST
+         ===================================== -->
+
+    <div
+        id="application-modal"
+        class="modal-overlay"
+        hidden
+        aria-hidden="true"
+    >
+
+        <div
+            class="modal application-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="application-title"
+        >
+
+            <button
+                type="button"
+                id="close-application"
+                class="modal-close"
+                aria-label="Close application form"
+            >
+                &times;
+            </button>
+
+
+            <p class="modal-domain">
+                Internship Application
+            </p>
+
+
+            <h2 id="application-title">
+                Apply for Internship
+            </h2>
+
+
+            <p
+                id="application-internship"
+                class="modal-description"
+            ></p>
+
+
+            <form id="application-form">
+
+                <div class="application-field">
+
+                    <label for="applicant-name">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="applicant-name"
+                        name="name"
+                        placeholder="Enter your full name"
+                        autocomplete="name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="application-field">
+
+                    <label for="applicant-email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="applicant-email"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="application-field">
+
+                    <label for="applicant-phone">
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="applicant-phone"
+                        name="phone"
+                        placeholder="Enter your phone number"
+                        autocomplete="tel"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="application-field">
+
+                    <label for="applicant-college">
+                        College
+                    </label>
+
+                    <input
+                        type="text"
+                        id="applicant-college"
+                        name="college"
+                        placeholder="Enter your college name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="application-field">
+
+                    <label for="applicant-resume">
+                        Resume
+                    </label>
+
+                    <input
+                        type="file"
+                        id="applicant-resume"
+                        name="resume"
+                        accept=".pdf,.doc,.docx"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="application-field">
+
+                    <label for="applicant-message">
+                        Cover Message
+                    </label>
+
+                    <textarea
+                        id="applicant-message"
+                        name="message"
+                        rows="4"
+                        placeholder="Tell us briefly why you are interested..."
+                    ></textarea>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="modal-apply"
+                >
+                    Submit Application
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
